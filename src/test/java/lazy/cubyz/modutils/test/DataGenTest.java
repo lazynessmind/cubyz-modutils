@@ -1,7 +1,9 @@
 package lazy.cubyz.modutils.test;
 
 import cubyz.api.Resource;
-import lazy.cubyz.modutils.datagen.BlockGenerator;
+import cubyz.world.blocks.Blocks;
+import lazy.cubyz.modutils.datagen.builder.BlockDataBuilder;
+import lazy.cubyz.modutils.datagen.generetors.BlockGenerator;
 import lazy.cubyz.modutils.datagen.DataGeneration;
 import lazy.cubyz.modutils.datagen.DataObject;
 
@@ -29,6 +31,22 @@ public class DataGenTest {
         @Override
         public void addDataBuilders(Consumer<DataObject> dataObjectConsumer) {
             this.simpleCubeBlock(this.blockLoc("example"), "example:example");
+            BlockDataBuilder.create(this.blockLoc("example2")).texture("cubyz:cactus")
+                    .model(BLOCK_MODEL)
+                    .addDrop(DROP_ITSELF)
+                    .absorbedLight(1)
+                    .emittedLight(1)
+                    .solid(false)
+                    .selectable(false)
+                    .degradable(true)
+                    .gui("cubyz:workbench")
+                    .blockClass(Blocks.BlockClass.STONE)
+                    .breakingPower(1f)
+                    .hardness(1f)
+                    .transparent(true)
+                    .viewThrough(true)
+                    .rotation(NO_ROTATION)
+                    .build(this.dataConsumer());
         }
 
         @Override

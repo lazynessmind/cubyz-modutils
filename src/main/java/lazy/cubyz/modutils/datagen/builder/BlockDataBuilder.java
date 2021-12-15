@@ -1,9 +1,10 @@
-package lazy.cubyz.modutils.datagen;
+package lazy.cubyz.modutils.datagen.builder;
 
 import cubyz.api.Resource;
 import cubyz.utils.json.JsonArray;
 import cubyz.utils.json.JsonObject;
 import cubyz.world.blocks.Blocks;
+import lazy.cubyz.modutils.datagen.DataObject;
 
 import java.util.ArrayList;
 import java.util.List;
