@@ -2,12 +2,18 @@
 
 Modding utils for Cubyz
 
-### Contents: 
+## Contents: 
 
-- **DataGeneration:** Helper class to generate Cubyz data oriented objects like Blocks.
+### **DataGeneration:**
+Helper class to generate Cubyz data oriented objects like Blocks.
    - Contains an simple implementation of MD5 checksum to check if the file already exists to prevent regeneration of the same file.
    - Example: [Here](https://github.com/lazynessmind/cubyz-modutils/blob/main/src/test/java/lazy/cubyz/modutils/test/DataGenTest.java)
-
+   
+#### Block Generation TODO:
+   - [ ] Block: MultiTextureVariants
+   - [ ] Block: AnimatedTextures
+   - [ ] Block: Individual Texture (Currently only accepts one texture for all sides)
+   - [ ] Block: BlockEntity class reference (Maybe)
 ### Build:
 
 ```shell
