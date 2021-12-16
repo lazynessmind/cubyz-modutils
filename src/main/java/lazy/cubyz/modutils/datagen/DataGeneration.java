@@ -38,7 +38,7 @@ public class DataGeneration {
     public void runDataGenerators() {
         while (!this.dataGenerators.isEmpty()) {
             DataGenerator generator = this.dataGenerators.removeLast();
-            Logger.info("Running " + this.modId + " " + generator.getGeneratorID());
+            Logger.info("Running generator " + generator.getGeneratorID() + " from " + this.modId);
             this.dataObjects.clear();
             generator.addDataBuilders(this.dataConsumer);
             this.generateFiles();
@@ -64,6 +64,8 @@ public class DataGeneration {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+            } else {
+                Logger.info("   > Skipped " + dataObject.getLocation() + ". File is already cached.");
             }
         }
     }
@@ -126,8 +128,8 @@ public class DataGeneration {
         }
         StringBuilder result = new StringBuilder();
 
-        for (int i = 0; i < b.length; i++) {
-            result.append(Integer.toString((b[i] & 0xff) + 0x100, 16).substring(1));
+        for (byte value : b) {
+            result.append(Integer.toString((value & 0xff) + 0x100, 16).substring(1));
         }
         return result.toString();
     }
