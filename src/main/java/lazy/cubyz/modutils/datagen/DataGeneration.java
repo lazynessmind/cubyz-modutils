@@ -55,7 +55,7 @@ public class DataGeneration {
     private void generateFiles() {
         for (DataObject dataObject : dataObjects) {
             String filePath = ASSETS_PATH.concat(dataObject.getLocation().toString().replace(":", "/").concat(".json"));
-            if(!this.checkIsCached(dataObject)){
+            if (!this.checkIsCached(dataObject)) {
                 try {
                     FileWriter writer = new FileWriter(filePath);
                     writer.append(dataObject.buildObject().toString());
@@ -101,6 +101,15 @@ public class DataGeneration {
                 e.printStackTrace();
             }
         }
+
+        for (String s : props.keySet().toArray(new String[0])) {
+            String filePath = ASSETS_PATH.concat(modId).concat("/").concat(s);
+            if (!Files.exists(Paths.get(filePath))) {
+                props.remove(s);
+            }
+        }
+
+
         return props;
     }
 
