@@ -6,6 +6,7 @@ import lazy.cubyz.modutils.datagen.DataObject;
 import lazy.cubyz.modutils.datagen.builder.BlockDataBuilder;
 import lazy.cubyz.modutils.datagen.builder.OreDataBuilder;
 
+import java.util.List;
 import java.util.function.Consumer;
 
 public abstract class BlockGenerator extends DataGenerator {
@@ -28,6 +29,11 @@ public abstract class BlockGenerator extends DataGenerator {
 
     public void simpleOre(Resource resource, String allSidesTexture, int height, int veins, int size, float density) {
         BlockDataBuilder.create(resource).texture(allSidesTexture).model(BLOCK_MODEL).addDrop(DROP_ITSELF)
-                .ore(OreDataBuilder.create().density(density).height(height).size(size).veins(veins)).build(this.dataConsumer());
+                .ore(OreDataBuilder.create().density(density).height(height).size(size).veins(veins).addSource("cubyz:stone")).build(this.dataConsumer());
+    }
+
+    public void simpleAnimatedBlock(Resource resource, List<String> textures, int time) {
+        BlockDataBuilder.create(resource).textures(textures).model(BLOCK_MODEL).addDrop(DROP_ITSELF)
+                .time(time).build(this.dataConsumer());
     }
 }

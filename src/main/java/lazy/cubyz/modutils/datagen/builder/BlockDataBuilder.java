@@ -1,6 +1,7 @@
 package lazy.cubyz.modutils.datagen.builder;
 
 import cubyz.api.Resource;
+import cubyz.utils.Logger;
 import cubyz.utils.json.JsonArray;
 import cubyz.utils.json.JsonObject;
 import cubyz.world.blocks.Blocks;
@@ -26,9 +27,11 @@ public class BlockDataBuilder implements DataObject {
     private boolean viewThrough;
     private String rotation = "";
     private List<String> drops = new ArrayList<>();
-    public String model = "cubzy:block.obj";
-    public String texture = "";
-    public OreDataBuilder oreDataBuilder = null;
+    private String model = "cubzy:block.obj";
+    private List<String> textures = new ArrayList<>();
+    private int time = 0;
+
+    private OreDataBuilder oreDataBuilder = null;
 
     private BlockDataBuilder(Resource location) {
         this.id = location;
@@ -44,9 +47,15 @@ public class BlockDataBuilder implements DataObject {
     }
 
     public BlockDataBuilder texture(String texture) {
-        this.texture = texture;
+        this.textures.add(texture);
         return this;
     }
+
+    public BlockDataBuilder textures(List<String> texture) {
+        this.textures.addAll(texture);
+        return this;
+    }
+
 
     public BlockDataBuilder breakingPower(float breakingPower) {
         this.breakingPower = breakingPower;
@@ -123,13 +132,30 @@ public class BlockDataBuilder implements DataObject {
         return this;
     }
 
+    public BlockDataBuilder time(int time) {
+        this.time = time;
+        return this;
+    }
+
     public void build(Consumer<DataObject> obj) {
         obj.accept(this);
     }
 
     @Override
     public void serialize(JsonObject object) {
-        object.put("texture", this.texture);
+        if (this.textures.size() == 1) {
+            object.put("texture", this.textures.get(0));
+        } else if (this.textures.size() > 1 && this.time > 0) {
+            JsonObject animTextObj = new JsonObject();
+            animTextObj.put("time", this.time);
+            JsonArray texArr = new JsonArray();
+            texArr.addStrings(this.textures.toArray(new String[0]));
+            animTextObj.put("textures", texArr);
+            object.put("texture", animTextObj);
+        } else if (this.textures.size() > 1 && this.time == 0) {
+            object.put("texture", this.textures.get(0));
+            Logger.warning("Block " + this.id + " has animation textures but the animation time wasn't set. Call time(int) to set the animation time.");
+        }
         object.put("model", this.model);
         if (this.breakingPower != 0f) object.put("breakingPower", this.breakingPower);
         if (this.hardness != 0f) object.put("hardness", this.hardness);
