@@ -182,6 +182,7 @@ public class BlockDataBuilder implements DataObject {
             oreObj.put("density", this.oreDataBuilder.density);
             JsonArray sourcesArr = new JsonArray();
             sourcesArr.addStrings(this.oreDataBuilder.sources.toArray(new String[0]));
+            oreObj.put("source", sourcesArr);
             object.put("ore", oreObj);
         }
     }
