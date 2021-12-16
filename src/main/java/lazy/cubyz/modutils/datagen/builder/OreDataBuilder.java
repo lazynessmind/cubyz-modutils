@@ -1,6 +1,6 @@
 package lazy.cubyz.modutils.datagen.builder;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 public class OreDataBuilder {
@@ -9,9 +9,9 @@ public class OreDataBuilder {
     protected int size = 1;
     protected int height = 1;
     protected float density = 0.5f;
-    protected List<String> sources = Arrays.asList("cubyz:stone");
+    protected List<String> sources = new ArrayList<>();
 
-    public static OreDataBuilder create(){
+    public static OreDataBuilder create() {
         return new OreDataBuilder();
     }
 

@@ -20,8 +20,8 @@ public class BlockDataBuilder implements DataObject {
     private int emittedLight;
     private int absorbedLight;
     private boolean degradable;
-    private boolean selectable;
-    private boolean solid;
+    private boolean selectable = true;
+    private boolean solid = true;
     private String gui = "";
     private boolean transparent;
     private boolean viewThrough;
@@ -182,7 +182,7 @@ public class BlockDataBuilder implements DataObject {
             oreObj.put("density", this.oreDataBuilder.density);
             JsonArray sourcesArr = new JsonArray();
             sourcesArr.addStrings(this.oreDataBuilder.sources.toArray(new String[0]));
-            oreObj.put("source", sourcesArr);
+            oreObj.put("sources", sourcesArr);
             object.put("ore", oreObj);
         }
     }
