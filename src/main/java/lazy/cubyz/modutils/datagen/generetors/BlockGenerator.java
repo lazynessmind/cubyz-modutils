@@ -4,6 +4,7 @@ import cubyz.api.Resource;
 import lazy.cubyz.modutils.datagen.DataGenerator;
 import lazy.cubyz.modutils.datagen.DataObject;
 import lazy.cubyz.modutils.datagen.builder.BlockDataBuilder;
+import lazy.cubyz.modutils.datagen.builder.OreDataBuilder;
 
 import java.util.function.Consumer;
 
@@ -21,7 +22,12 @@ public abstract class BlockGenerator extends DataGenerator {
         return new Resource(this.modId(), "blocks/".concat(path));
     }
 
-    public void simpleCubeBlock(Resource resource, String allSidesTexture){
+    public void simpleCubeBlock(Resource resource, String allSidesTexture) {
         BlockDataBuilder.create(resource).texture(allSidesTexture).model(BLOCK_MODEL).addDrop(DROP_ITSELF).build(this.dataConsumer());
+    }
+
+    public void simpleOre(Resource resource, String allSidesTexture, int height, int veins, int size, float density) {
+        BlockDataBuilder.create(resource).texture(allSidesTexture).model(BLOCK_MODEL).addDrop(DROP_ITSELF)
+                .ore(OreDataBuilder.create().density(density).height(height).size(size).veins(veins)).build(this.dataConsumer());
     }
 }

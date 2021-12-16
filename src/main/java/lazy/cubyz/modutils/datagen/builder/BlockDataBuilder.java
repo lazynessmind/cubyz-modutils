@@ -28,6 +28,7 @@ public class BlockDataBuilder implements DataObject {
     private List<String> drops = new ArrayList<>();
     public String model = "cubzy:block.obj";
     public String texture = "";
+    public OreDataBuilder oreDataBuilder = null;
 
     private BlockDataBuilder(Resource location) {
         this.id = location;
@@ -117,6 +118,11 @@ public class BlockDataBuilder implements DataObject {
         return this;
     }
 
+    public BlockDataBuilder ore(OreDataBuilder builder) {
+        this.oreDataBuilder = builder;
+        return this;
+    }
+
     public void build(Consumer<DataObject> obj) {
         obj.accept(this);
     }
@@ -141,6 +147,16 @@ public class BlockDataBuilder implements DataObject {
             JsonArray dropsArr = new JsonArray();
             dropsArr.addStrings(this.drops.toArray(new String[0]));
             object.put("drops", dropsArr);
+        }
+        if (this.oreDataBuilder != null) {
+            JsonObject oreObj = new JsonObject();
+            oreObj.put("veins", this.oreDataBuilder.veins);
+            oreObj.put("size", this.oreDataBuilder.size);
+            oreObj.put("height", this.oreDataBuilder.height);
+            oreObj.put("density", this.oreDataBuilder.density);
+            JsonArray sourcesArr = new JsonArray();
+            sourcesArr.addStrings(this.oreDataBuilder.sources.toArray(new String[0]));
+            object.put("ore", oreObj);
         }
     }
 
