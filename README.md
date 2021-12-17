@@ -11,7 +11,7 @@ Helper class to generate Cubyz data oriented objects like Blocks.
    
 #### Block Generation TODO:
    - [ ] Block: MultiTextureVariants
-   - [ ] Block: AnimatedTextures
+   - [x] Block: AnimatedTextures
    - [ ] Block: Individual Texture (Currently only accepts one texture for all sides)
    - [ ] Block: BlockEntity class reference (Maybe)
 ### Build:
