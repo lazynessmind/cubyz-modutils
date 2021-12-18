@@ -1,20 +1,24 @@
 package lazy.cubyz.modutils.datagen;
 
-import cubyz.api.Resource;
 import cubyz.utils.Logger;
 
-import java.io.*;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.security.MessageDigest;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Properties;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 
+/**
+ * Class that runs the generators and creates the data files.
+ *
+ * General use:
+ *
+ * DataGeneration gen = new DataGeneration("mymod");
+ * gen.addGenerator(myGenerator);
+ * gen.runDataGenerators();
+ */
 public class DataGeneration {
 
     private static final String ASSETS_PATH = "./assets/";
@@ -23,12 +27,12 @@ public class DataGeneration {
 
     private final String modId;
     private final Consumer<DataObject> dataConsumer;
-    private final Properties cachedFiles;
+    private final CacheSystem cacheSystem;
 
     public DataGeneration(String modId) {
         this.modId = modId;
         this.dataConsumer = this.dataObjects::add;
-        this.cachedFiles = this.loadCacheFile();
+        this.cacheSystem = new CacheSystem(modId);
     }
 
     public void addGenerator(BiFunction<String, Consumer<DataObject>, DataGenerator> generatorFactory) {
@@ -45,7 +49,7 @@ public class DataGeneration {
         }
         try {
             FileWriter writer = new FileWriter(ASSETS_PATH.concat("cacheFile.txt"));
-            this.cachedFiles.store(writer, "");
+            this.cacheSystem.getCache().store(writer, "# Don't delete. This prevents the Data generator of regeneration all the files when not needed.");
             writer.close();
         } catch (IOException e) {
             e.printStackTrace();
@@ -55,7 +59,7 @@ public class DataGeneration {
     private void generateFiles() {
         for (DataObject dataObject : dataObjects) {
             String filePath = ASSETS_PATH.concat(dataObject.getLocation().toString().replace(":", "/").concat(".json"));
-            if (!this.checkIsCached(dataObject)) {
+            if (!this.cacheSystem.isDataObjectCached(dataObject)) {
                 try {
                     FileWriter writer = new FileWriter(filePath);
                     writer.append(dataObject.buildObject().toString());
@@ -68,78 +72,5 @@ public class DataGeneration {
                 Logger.info("   > Skipped " + dataObject.getLocation() + ". File is already cached.");
             }
         }
-    }
-
-    private boolean checkIsCached(DataObject object) {
-        Resource resource = object.getLocation();
-        String md5Checksum = getMD5Checksum(object.buildObject().toString());
-        String fileName = resource.getID().concat(".json");
-        boolean hasKey = this.cachedFiles.containsKey(fileName);
-        boolean isTheSameKey = hasKey && this.cachedFiles.get(fileName).equals(md5Checksum);
-        if (!hasKey || !isTheSameKey) {
-            this.cachedFiles.put(fileName, md5Checksum);
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-    private Properties loadCacheFile() {
-        Properties props = new Properties();
-        if (Files.exists(Paths.get(ASSETS_PATH.concat("cacheFile.txt")))) {
-            try {
-                FileReader reader = new FileReader(ASSETS_PATH.concat("cacheFile.txt"));
-                props.load(reader);
-                reader.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } else {
-            try {
-                Files.createFile(Paths.get(ASSETS_PATH.concat("cacheFile.txt")));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        for (String s : props.keySet().toArray(new String[0])) {
-            String filePath = ASSETS_PATH.concat(modId).concat("/").concat(s);
-            if (!Files.exists(Paths.get(filePath))) {
-                props.remove(s);
-            }
-        }
-
-
-        return props;
-    }
-
-    public static byte[] createChecksum(String fileContent) throws Exception {
-        InputStream fis = new ByteArrayInputStream(fileContent.getBytes(StandardCharsets.UTF_8));
-        byte[] buffer = new byte[1024];
-        MessageDigest complete = MessageDigest.getInstance("MD5");
-        int numRead;
-        do {
-            numRead = fis.read(buffer);
-            if (numRead > 0) {
-                complete.update(buffer, 0, numRead);
-            }
-        } while (numRead != -1);
-        fis.close();
-        return complete.digest();
-    }
-
-    public static String getMD5Checksum(String fileContent) {
-        byte[] b = new byte[0];
-        try {
-            b = createChecksum(fileContent);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        StringBuilder result = new StringBuilder();
-
-        for (byte value : b) {
-            result.append(Integer.toString((value & 0xff) + 0x100, 16).substring(1));
-        }
-        return result.toString();
     }
 }
