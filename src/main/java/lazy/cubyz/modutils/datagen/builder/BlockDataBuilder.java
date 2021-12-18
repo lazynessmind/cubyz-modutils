@@ -30,6 +30,7 @@ public class BlockDataBuilder implements DataObject {
     private String model = "cubzy:block.obj";
     private List<String> textures = new ArrayList<>();
     private int time = 0;
+    private List<String> textureVariants = new ArrayList<>();
 
     private OreDataBuilder oreDataBuilder = null;
 
@@ -137,6 +138,16 @@ public class BlockDataBuilder implements DataObject {
         return this;
     }
 
+    public BlockDataBuilder addTextureVariants(List<String> textureVariants) {
+        this.textureVariants.addAll(textureVariants);
+        return this;
+    }
+
+    public BlockDataBuilder addTextureVariant(String textureVariant) {
+        this.textureVariants.add(textureVariant);
+        return this;
+    }
+
     public void build(Consumer<DataObject> obj) {
         obj.accept(this);
     }
@@ -155,6 +166,16 @@ public class BlockDataBuilder implements DataObject {
         } else if (this.textures.size() > 1 && this.time == 0) {
             object.put("texture", this.textures.get(0));
             Logger.warning("Block " + this.id + " has animation textures but the animation time wasn't set. Call time(int) to set the animation time.");
+        }
+        if(!this.textureVariants.isEmpty()) {
+            this.rotation = "cubyz:multi_texture";
+            JsonArray textVariantsArr = new JsonArray();
+            for (String textureVariant : this.textureVariants) {
+                JsonObject texObj = new JsonObject();
+                texObj.put("texture", textureVariant);
+                textVariantsArr.add(texObj);
+            }
+            object.put("multi_texture_variants", textVariantsArr);
         }
         object.put("model", this.model);
         if (this.breakingPower != 0f) object.put("breakingPower", this.breakingPower);
