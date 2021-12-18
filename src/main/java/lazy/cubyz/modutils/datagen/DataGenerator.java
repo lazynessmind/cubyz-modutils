@@ -2,8 +2,13 @@ package lazy.cubyz.modutils.datagen;
 
 import cubyz.api.Resource;
 
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
 
+/**
+ * Abstract generator that holds the basic variables and methods to make a generator.
+ * Check {@link DataGeneration#addGenerator(BiFunction)} and {@link DataGeneration#runDataGenerators()}
+ */
 public abstract class DataGenerator {
 
     private final String modId;

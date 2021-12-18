@@ -3,6 +3,11 @@ package lazy.cubyz.modutils.datagen.builder;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Used on {@link BlockDataBuilder} to add ore properties on the block.
+ * {@link BlockDataBuilder#ore(OreDataBuilder)}
+ */
+@SuppressWarnings("unused")
 public class OreDataBuilder {
 
     protected int veins = 1;

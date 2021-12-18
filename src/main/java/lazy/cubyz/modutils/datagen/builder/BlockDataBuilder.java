@@ -11,9 +11,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
+@SuppressWarnings("unused")
 public class BlockDataBuilder implements DataObject {
 
-    private Resource id;
+    private final Resource id;
     private float breakingPower;
     private float hardness;
     private String blockClass = "";
@@ -26,11 +27,11 @@ public class BlockDataBuilder implements DataObject {
     private boolean transparent;
     private boolean viewThrough;
     private String rotation = "";
-    private List<String> drops = new ArrayList<>();
-    private String model = "cubzy:block.obj";
-    private List<String> textures = new ArrayList<>();
+    private final List<String> drops = new ArrayList<>();
+    private String model = "cubyz:block.obj";
+    private final List<String> textures = new ArrayList<>();
     private int time = 0;
-    private List<String> textureVariants = new ArrayList<>();
+    private final List<String> textureVariants = new ArrayList<>();
     private String textureTop = "";
     private String textureBottom = "";
 
