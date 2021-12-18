@@ -31,6 +31,8 @@ public class BlockDataBuilder implements DataObject {
     private List<String> textures = new ArrayList<>();
     private int time = 0;
     private List<String> textureVariants = new ArrayList<>();
+    private String textureTop = "";
+    private String textureBottom = "";
 
     private OreDataBuilder oreDataBuilder = null;
 
@@ -148,6 +150,16 @@ public class BlockDataBuilder implements DataObject {
         return this;
     }
 
+    public BlockDataBuilder textureTop(String textureTop) {
+        this.textureTop = textureTop;
+        return this;
+    }
+
+    public BlockDataBuilder textureBottom(String textureBottom) {
+        this.textureBottom = textureBottom;
+        return this;
+    }
+
     public void build(Consumer<DataObject> obj) {
         obj.accept(this);
     }
@@ -177,6 +189,8 @@ public class BlockDataBuilder implements DataObject {
             }
             object.put("multi_texture_variants", textVariantsArr);
         }
+        if(!this.textureTop.isEmpty()) object.put("texture_top", this.textureTop);
+        if(!this.textureBottom.isEmpty()) object.put("texture_bottom", this.textureBottom);
         object.put("model", this.model);
         if (this.breakingPower != 0f) object.put("breakingPower", this.breakingPower);
         if (this.hardness != 0f) object.put("hardness", this.hardness);
