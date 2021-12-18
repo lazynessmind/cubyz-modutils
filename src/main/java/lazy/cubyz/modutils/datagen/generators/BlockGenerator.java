@@ -1,4 +1,4 @@
-package lazy.cubyz.modutils.datagen.generetors;
+package lazy.cubyz.modutils.datagen.generators;
 
 import cubyz.api.Resource;
 import lazy.cubyz.modutils.datagen.DataGenerator;
@@ -6,7 +6,6 @@ import lazy.cubyz.modutils.datagen.DataObject;
 import lazy.cubyz.modutils.datagen.builder.BlockDataBuilder;
 import lazy.cubyz.modutils.datagen.builder.OreDataBuilder;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
