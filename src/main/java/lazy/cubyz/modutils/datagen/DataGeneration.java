@@ -47,13 +47,7 @@ public class DataGeneration {
             generator.addDataBuilders(this.dataConsumer);
             this.generateFiles();
         }
-        try {
-            FileWriter writer = new FileWriter(ASSETS_PATH.concat("cacheFile.txt"));
-            this.cacheSystem.getCache().store(writer, "# Don't delete. This prevents the Data generator of regeneration all the files when not needed.");
-            writer.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        this.cacheSystem.saveCache(this.modId);
     }
 
     private void generateFiles() {

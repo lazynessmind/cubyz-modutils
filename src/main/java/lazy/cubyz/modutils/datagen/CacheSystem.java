@@ -1,9 +1,6 @@
 package lazy.cubyz.modutils.datagen;
 
-import java.io.ByteArrayInputStream;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -59,6 +56,16 @@ public class CacheSystem {
         }
 
         return props;
+    }
+
+    public void saveCache(String modId) {
+        try {
+            FileWriter writer = new FileWriter(Paths.get("assets/".concat(modId).concat("_cache.txt")).toFile());
+            this.cache.store(writer, "# Don't delete. This prevents the Data generator of regeneration all the files when not needed.");
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void cleanCachedDeletedFiles(String modID) {
